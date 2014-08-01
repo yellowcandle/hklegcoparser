@@ -1,4 +1,6 @@
-urls<-scan("xml_list.txt")
+require(plyr)
+require(XML)
+urls<-scan("xml_list.txt", what="raw")
 parse_xml <- function(filename)
   {
     load <- xmlParse(filename)
