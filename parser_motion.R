@@ -6,4 +6,5 @@ parse_xml <- function(filename)
     load <- xmlParse(filename)
     loaddf <- xmlToDataFrame(load, nodes=getNodeSet(load,"//motion-en"))
   }
-testdf <- ldply(urls, parse_xml, .progress="text")
+motion <- ldply(urls, parse_xml, .progress="text")
+colnames(motion) <- "motion.title"
