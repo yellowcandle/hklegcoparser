@@ -2,12 +2,18 @@
 require(plyr)
 require(XML)
 
-# parse motion date
+# load list of urls
 urls<-scan("xml_list.txt", what="raw")
+
+# data frames
+motiondate <- data.frame(stringsAsFactors=0)
+motion <- data.frame(stringsAsFactors=0)
+voterecords <- data.frame(stringsAsFactors=0)
+# parse motion date
 parse_xml <- function(filename)
 {
   load <- xmlParse(filename)
-  loaddf <- xmlToDataFrame(load, nodes=getNodeSet(load,"//vote-date"))
+  loaddf <- xmlToDataFrame(load, nodes=getNodeSet(load,"//vote-date"),stringsAsFactors=0)
 }
 motiondate <- ldply(urls, parse_xml, .progress="text")
 colnames(motiondate) <- "motion.date"
@@ -16,19 +22,18 @@ colnames(motiondate) <- "motion.date"
 parse_xml <- function(filename)
 {
   load <- xmlParse(filename)
-  loaddf <- xmlToDataFrame(load, nodes=getNodeSet(load,"//motion-en"))
+  loaddf <- xmlToDataFrame(load, nodes=getNodeSet(load,"//motion-en"),stringsAsFactors=0)
 }
 motion <- ldply(urls, parse_xml, .progress="text")
 colnames(motion) <- "motion.name"
 
 # parse voting records
-urls<-scan("xml_list.txt", what="raw")
 parse_xml <- function(filename)
 {
   load <- xmlParse(filename)
-  loaddf <- xmlToDataFrame(load, nodes=getNodeSet(load,"//individual-votes"))
+  loaddf <- xmlToDataFrame(load, nodes=getNodeSet(load,"//individual-votes"),stringsAsFactors=0)
 }
-voterecords <- data.frame()
+
 for (v in 1:52)
 {
   i <- ldply(urls[v], parse_xml, .progress="text")
